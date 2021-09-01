@@ -23,10 +23,25 @@ app.get("/", function (req, res) {
 app.get("/api/hello", function (req, res) {
   res.json({greeting: 'hello API'});
 });
-
+// :)
+app.get("/api/:date", (req,res)=> {
+    let date = req.params.date;
+  if (/\d{4}-\d{1,2}-\d{1,2}/.test(date)) {
+      date = date.split('-');
+      let year = date[0];
+      let month = date[1];
+      let day = date[2];
+      let DateObject = new Date(year,month,day);
+      res.json({unix: DateObject.valueOf(), utc: DateObject.toString()})
+    }
+    else {
+      let DateObject = new Date(parseInt(date));
+      res.json({ unix: date, utc: DateObject.toString()});
+    }
+})
 
 
 // listen for requests :)
-var listener = app.listen(process.env.PORT, function () {
+var listener = app.listen(3000, function () {
   console.log('Your app is listening on port ' + listener.address().port);
 });
