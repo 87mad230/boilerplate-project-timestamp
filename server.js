@@ -28,11 +28,11 @@ app.get("/api/:date?", (req,res)=> {
     let date = req.params.date;
   if (/\d{4}-\d{1,2}-\d{1,2}/.test(date)) {
       let DateObject = new Date(date);
-    res.json({ unix: DateObject.valueOf(), utc: DateObject.toString().slice(0, DateObject.toString().length - 11)})
+      res.json({ unix: DateObject.valueOf(), utc: DateObject.toUTCString()});
     }
-    else if (/\d+/.test(date)) {
+    else if (/^\d+$/.test(date)) {
       let DateObject = new Date(parseInt(date));
-      res.json({ unix: date, utc: DateObject.toString()});
+      res.json({ unix: date, utc: DateObject.toUTCString()});
     }
     else {
       res.json({error: "Invalid Date" });
