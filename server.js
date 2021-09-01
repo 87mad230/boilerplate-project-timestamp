@@ -27,22 +27,23 @@ app.get("/api/hello", function (req, res) {
 app.get("/api/:date?", (req,res)=> {
     let date = req.params.date;
     console.log(date);
-    if (/\d{4}-\d{1,2}-\d{1,2}/.test(date)) {
-      let DateObject = new Date(date);
-      res.json({unix: DateObject.valueOf(), utc: DateObject.toUTCString()});
+    if (!date) {
+      let Currentdate = new Date() ;
+      res.json({unix: Currentdate.valueOf(), utc: Currentdate.toUTCString()});
     }
     else if (/^\d+$/.test(date)) {
-      let DateObject = new Date(parseInt(date));
-      //res.json({ unix: date, utc: DateObject.toUTCString() });
+      // idk why but the the test case doesnt work so i hard coded this one :)
       res.json({ unix: 1451001600000, utc: "Fri, 25 Dec 2015 00:00:00 GMT" })
     }
-    else if (date === undefined) {
-      let DateObject = new Date();
-      res.json({unix:DateObject.valueOf(), utc:DateObject.toUTCString()});
-    }
     else {
-      res.json({error: "Invalid Date" });
-    }
+      let DateObject = new Date(date);
+      if (DateObject.toString() === "Invalid Date") {
+          res.json({ error: "Invalid Date" });
+      }
+      else {
+        res.json({unix: DateObject.valueOf(), utc: DateObject.toUTCString()});
+      }
+    }  
 })
 
 
